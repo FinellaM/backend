@@ -8,7 +8,7 @@ const router = express.Router()
 const Product = require('./../models/Product')
 const path = require('path')
 
-// GET route - get all products
+// GET - get all products
 router.get('/', (req, res) => {
     
     /*const products = [
@@ -33,6 +33,31 @@ router.get('/', (req, res) => {
             console.log("problem getting products", err)
         })
 })
+
+// GET - get single product
+router.get('/:id', (req, res) => {
+    // use the User model to find one user by id - search the database for that user
+    Product.findById(req.params.id)
+        .then((product) => {
+            // check if user with that id exists
+            // if it's false/user not found, send status code + json mesage
+            if(!product) {
+                res.status(400).json({
+                    message: "product doesn't exist"
+                })
+            // now normal json response will only run if user object is found successfully
+            }else{
+                res.json(product)
+            }
+        })
+        .catch((err) => {
+            console.log("error getting product", err)
+                res.status(500).json({ // error response sent to user
+                    message: "problem getting product",
+                    error: err
+            })
+        })
+    })
 
 
 // EXPORT the router object 
