@@ -36,16 +36,16 @@ router.get('/', (req, res) => {
 
 // GET - get single product
 router.get('/:id', (req, res) => {
-    // use the User model to find one user by id - search the database for that user
+    // use the Product model to find one product by id - search the database for that product
     Product.findById(req.params.id)
         .then((product) => {
-            // check if user with that id exists
-            // if it's false/user not found, send status code + json mesage
+            // check if product with that id exists
+            // if it's false/product not found, send status code + json mesage
             if(!product) {
                 res.status(400).json({
                     message: "product doesn't exist"
                 })
-            // now normal json response will only run if user object is found successfully
+            // now normal json response will only run if product object is found successfully
             }else{
                 res.json(product)
             }
