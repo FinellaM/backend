@@ -41,10 +41,12 @@ app.get('/', (req, res) => {
 /*app.get('/product', (req, res) => {
     res.send("Listing all products")
 }) */
+// completed 
 const productRouter = require('./routes/product')
 app.use('/product', productRouter)
 
 // Stockist  route
+// still to be completed 
 app.get('/stockist', (req, res) => {
     res.send("Listing all stockists")
 })
