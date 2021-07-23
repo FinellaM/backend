@@ -32,19 +32,21 @@ router.post('/', (req, res) => {
       return res.status(400).send({message: "Message content can't be empty"})
       // stops the code from continuing to run, user must fill out form correctly and submit again.
     }
-    // validate - check if image file (attachment) exists
+    
+    /* POST REQUEST NOT WORKING WITH IMAGE UPLOAD - TRY WITHOUT
+    validate - check if image file (attachment) exists
     if(!req.files || !req.files.image){
       // return res.status(400).send({message: "Image can't be empty"})
       // image file NOT actually required
       console.log("No image file attached with this message")
     }
     
-    console.log('req.body = ', req.body)
+    console.log('req.body = ', req.body) 
   
     // image file exists. Upload image, then create new message
-    /* upload.File function: upload.File(file, uploadPath, callback) 
-       uploadPath = public folder 
-       callback: returns a uniqueFilename */
+     // upload.File function: upload.File(file, uploadPath, callback) 
+     // uploadPath = public folder 
+     // callback: returns a uniqueFilename 
     let uploadPath = path.join(__dirname, '..', 'public')
     Utils.uploadFile(req.files.image, uploadPath, (uniqueFilename) => {    
       // create new message object (runs once image is uploaded)
@@ -56,8 +58,10 @@ router.post('/', (req, res) => {
         message: req.body.message,
         attachment: uniqueFilename
       })
+      */
     
       // save new message to DB
+      let newMessage = new Message (req.body)
       newMessage.save()
       .then(message => {        
         // success!  
@@ -71,7 +75,6 @@ router.post('/', (req, res) => {
           error: err
         })
       })
-    })
   })
 
 // export
