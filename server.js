@@ -7,6 +7,8 @@ const express = require("express")
 const cors = require("cors")
 // connection to server (port 3000 will be used when running server on local machine)
 const port = process.env.PORT || 3000
+// allows express server to handle file uploads
+const fileUpload = require('express-fileupload') 
 
 
 // database connection -------------------------------------------------------------------------
@@ -22,9 +24,13 @@ mongoose.connect(process.env.MONGO_URI, {
 // express app setup - configure express -------------------------------------------------------
 // store express app in variable 'express'
 const app = express()
+app.use(express.static('public'))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use('*', cors()) // (cross origin resource sharing)
+app.use(fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 }
+  }))
 
 
 // ROUTES --------------------------------------------------------------------------------------
@@ -44,6 +50,14 @@ app.get('/', (req, res) => {
 // completed 
 const productRouter = require('./routes/product')
 app.use('/product', productRouter)
+
+// Message (contact form) route
+/*app.get('/message', (req, res) => {
+    res.send("Listing all messages")
+}) */
+// completed/incomplete 
+const messageRouter = require('./routes/message')
+app.use('/message', messageRouter)
 
 // Stockist  route
 // still to be completed 
