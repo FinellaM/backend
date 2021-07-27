@@ -43,6 +43,10 @@ app.get('/', (req, res) => {
     res.send("This is the homepage")
 })
 
+// Nutrtion route
+const nutritionRouter = require('./routes/nutrition')
+app.use('/nutrition', nutritionRouter)
+
 // Product route
 /*app.get('/product', (req, res) => {
     res.send("Listing all products")
