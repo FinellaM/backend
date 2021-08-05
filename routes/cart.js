@@ -26,11 +26,11 @@ router.get('/:id', (req, res) => {
             })
         // now normal json response will only run if product object is found successfully
         }else{
-            console.log(product);
+            //console.log(product);
             cart.add(product, product.id);
             req.session.cart = cart; // store in cart object in session (express-session saves it automatically)
             res.json(cart);
-            //console.log(req.session.cart);
+            //console.log(cart);
         }
     })
     .catch((err) => {

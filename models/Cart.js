@@ -2,8 +2,8 @@
 // cart is recreated each time a new item is added
 module.exports = function Cart(oldCart) {
     this.items = oldCart.items || {}; // if it's undefined (ie. if no items in cart yet), use an empty object 
-    this.totalQty = oldCart.totalQty; //|| 0; // if undefined (ie. if no items in cart yet), set qty and price to 0
-    this.totalPrice = oldCart.totalPrice; //|| 0;
+    this.totalQty = oldCart.totalQty || 0; // if undefined (ie. if no items in cart yet), set qty and price to 0
+    this.totalPrice = oldCart.totalPrice || 0;
 
     // function to add new items to the Cart
     this.add = function(item, id) {
@@ -12,9 +12,9 @@ module.exports = function Cart(oldCart) {
             storedItem = this.items[id] = {item: item, qty: 0, price: 0};
         }
         storedItem.qty++; // increment by one
-        storedItem.price = storedItem.item.price * storedItem.qty;
+        storedItem.price = 7.99 * storedItem.qty; //storedItem.item.price * storedItem.qty;
         this.totalQty++; // increment by one
-        this.totalPrice += storedItem.price; // add new cart product price to total cart price
+        this.totalPrice += 7.99 //storedItem.price; // add new cart product price to total cart price
     }
 
     // transform object into an array (incase it needs to be outputted as a list etc)
