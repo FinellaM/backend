@@ -57,7 +57,7 @@ router.get('/:id', (req, res) => {
                     error: err
             })
         })
-    })
+})
 
 
 // EXPORT the router object 
