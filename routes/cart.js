@@ -16,7 +16,6 @@ router.get('/:id', (req, res) => {
     var cart = new Cart(req.session.cart ? req.session.cart : {});
 
     Product.findById(productId)
-
     .then((product) => {
         // check if product with that id exists
         // if it's false/product not found, send status code + json mesage
@@ -36,10 +35,29 @@ router.get('/:id', (req, res) => {
     .catch((err) => {
         console.log("problem adding product to your cart", err)
             res.status(500).json({ // error response sent to user
-                message: "pproblem adding product to your cart",
+                message: "problem adding product to your cart",
                 error: err
         })
     })
+});
+
+// GET - get cart
+router.get('/', (req, res) => {
+    // check if cart is set already (in session store)
+        if (!req.session.cart) {
+            return res.status(400).json({
+                message: "problem getting your cart"
+            })
+        }
+        // cart exists:
+        var cart = new Cart(req.session.cart); // create a new cart off the one stored in the session
+        res.json(cart);
+        //console.log(cart);
+        // ***THIS IS RENDER - NEEDS TO BE DONE IN FRONT END INSTEAD? - refer to routes/listing.js for alternative setup
+        // res.render('shop/cart', {products: cart.generateArray(), totalPrice: cart.totalPrice}); 
+    
+});
+
    
     // Up to: Build a Shopping Cart - #12 Cart Model
     /*var productId = req.params.id;
@@ -72,7 +90,6 @@ router.get('/:id', (req, res) => {
         .catch((err) => {
             console.log("problem getting products in your cart", err)
         }) */
-});
 
 
 // EXPORT the router object 
