@@ -26,9 +26,9 @@ router.get('/:id', (req, res) => {
         // now normal json response will only run if product object is found successfully
         }else{
             //console.log(product);
-            cart.add(product, product.id);
+            cart.add(product.flavour, product.id); //cart.add(product, product.id);
             req.session.cart = cart; // store in cart object in session (express-session saves it automatically)
-            res.json(cart);
+            res.status(200).json(cart);
             //console.log(cart);
         }
     })
@@ -46,7 +46,7 @@ router.get('/', (req, res) => {
     // check if cart is set already (in session store)
         if (!req.session.cart) {
             return res.status(400).json({
-                message: "problem getting your cart"
+                message: "Your cart is empty"
             })
         }
         // cart exists:

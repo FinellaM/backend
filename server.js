@@ -72,6 +72,10 @@ app.use('/nutrition', nutritionRouter)
 const cartRouter = require('./routes/cart')
 app.use('/cart', cartRouter)
 
+// Checkout route
+const checkoutRouter = require('./routes/checkout')
+app.use('/checkout', checkoutRouter)
+
 // Product route
 /*app.get('/product', (req, res) => {
     res.send("Listing all products")
