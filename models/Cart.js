@@ -12,9 +12,9 @@ module.exports = function Cart(oldCart) {
             storedItem = this.items[id] = {item: item, qty: 0, price: 0};
         }
         storedItem.qty++; // increment by one
-        storedItem.price = 7.99 * storedItem.qty; //storedItem.item.price * storedItem.qty;
+        storedItem.price = storedItem.item.price * storedItem.qty; //storedItem.item.price * storedItem.qty;
         this.totalQty++; // increment by one
-        this.totalPrice += 7.99 //storedItem.price; // add new cart product price to total cart price
+        this.totalPrice += storedItem.item.price //storedItem.price; // add new cart product price to total cart price
     }
 
     // transform object into an array (incase it needs to be outputted as a list etc)

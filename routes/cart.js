@@ -10,8 +10,16 @@ const Product = require('./../models/Product')
 const path = require('path')
 
 // add product to cart (store in user session, will be stored in a cart object)
-router.get('/:id', (req, res) => {
 
+router.post('/:id', (req, res) => {
+
+    // NEW*
+    // validate  - check that request body isn't empty
+    if(Object.keys(req.body).length === 0){   
+        return res.status(400).send({message: "Request body can't be empty"})
+      }
+      console.log('req.body = ', req.body)
+    
     var productId = req.params.id;
     var cart = new Cart(req.session.cart ? req.session.cart : {});
 
@@ -21,12 +29,12 @@ router.get('/:id', (req, res) => {
         // if it's false/product not found, send status code + json mesage
         if(!product) {
             res.status(400).json({
-                message: "problem adding product to your cart"
+                message: "Problem adding product to your cart"
             })
         // now normal json response will only run if product object is found successfully
         }else{
             //console.log(product);
-            cart.add(product.flavour, product.id); //cart.add(product, product.id);
+            cart.add(product, product.id); //cart.add(product, product.id);
             req.session.cart = cart; // store in cart object in session (express-session saves it automatically)
             res.status(200).json(cart);
             //console.log(cart);
