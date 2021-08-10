@@ -84,6 +84,10 @@ app.use('/checkout', checkoutRouter)
 const productRouter = require('./routes/product')
 app.use('/product', productRouter)
 
+// Item route (for individual product items to be added to cart/orders)
+const itemRouter = require('./routes/item')
+app.use('/item', itemRouter)
+
 // Message (contact form) route
 /*app.get('/message', (req, res) => {
     res.send("Listing all messages")

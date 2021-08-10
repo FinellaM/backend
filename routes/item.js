@@ -1,49 +1,48 @@
-// PRODUCT ROUTES
-// fetch requests from ProductAPI (frontend) will come here
+// ITEM ROUTES
+// used for cart, checkout and orders
 
 // express has it's own router we can use. Store in variable 'router'
 const express = require("express")
 const router = express.Router()
-const Product = require('./../models/Product')
+const Item = require('./../models/Item')
 const path = require('path')
 
 // GET - get all products
 router.get('/', (req, res) => {
 
-    // get all products from the Product model (so all products in the MongoDB product collection) using the find() method
-    Product.find()
-        // if successful will return json object containing list of all products (products)
-        .then((products) => {
-            res.json(products)
-            // console.log(products)
+    // get all products from the Item model (so all items in the MongoDB item collection) using the find() method
+    Item.find()
+        // if successful will return json object containing list of all items
+        .then((items) => {
+            res.json(items)
         })
         // runs when there's an error
         // print error message + info in error object in console log
         .catch((err) => {
-            console.log("Problem getting products", err)
+            console.log("problem getting items", err)
         })
 })
 
 // GET - get single product
 router.get('/:id', (req, res) => {
     // use the Product model to find one product by id - search the database for that product
-    Product.findById(req.params.id)
-        .then((product) => {
+    Item.findById(req.params.id)
+        .then((item) => {
             // check if product with that id exists
             // if it's false/product not found, send status code + json mesage
-            if(!product) {
+            if(!item) {
                 res.status(400).json({
-                    message: "Product doesn't exist"
+                    message: "Product item doesn't exist"
                 })
             // now normal json response will only run if product object is found successfully
             }else{
-                res.json(product)
+                res.json(item)
             }
         })
         .catch((err) => {
-            console.log("Error getting product", err)
+            console.log("Error getting product item", err)
                 res.status(500).json({ // error response sent to user
-                    message: "Problem getting product",
+                    message: "Problem getting product item",
                     error: err
             })
         })
