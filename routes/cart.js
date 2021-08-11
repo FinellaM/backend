@@ -6,7 +6,8 @@
 const express = require("express")
 const router = express.Router()
 const Cart = require('./../models/Cart')
-const Product = require('./../models/Product') 
+// const Product = require('./../models/Product') 
+const Item = require('./../models/Item') 
 const path = require('path')
 
 // add product to cart (store in user session, will be stored in a cart object)
@@ -15,7 +16,7 @@ router.get('/:id', (req, res) => {
     var productId = req.params.id;
     var cart = new Cart(req.session.cart ? req.session.cart : {});
 
-    Product.findById(productId)
+    Item.findById(productId)
     .then((product) => {
         // check if product with that id exists
         // if it's false/product not found, send status code + json mesage
@@ -26,7 +27,7 @@ router.get('/:id', (req, res) => {
         // now normal json response will only run if product object is found successfully
         }else{
             //console.log(product);
-            cart.add(product.flavour, product.id); //cart.add(product, product.id);
+            cart.add(product, product.id); //cart.add(product, product.id);
             req.session.cart = cart; // store in cart object in session (express-session saves it automatically)
             res.status(200).json(cart);
             //console.log(cart);
