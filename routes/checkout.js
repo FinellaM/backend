@@ -3,7 +3,7 @@
 const express = require('express')
 const router = express.Router()
 const Cart = require('./../models/Cart')
-const Product = require('./../models/Product') 
+const Order = require('./../models/Order') 
 const path = require('path')
 
 // checkout route
@@ -20,8 +20,16 @@ router.get('/', (req, res) => {
     res.json(cart);
 })
 
-// checkout POST route
+// checkout POST route - charge the user (Stripe)
 router.post('/', async (req, res) => { 
+    //16.08.21**************************
+    // validate  - check that request body isn't empty
+    if(Object.keys(req.body).length === 0){   
+        return res.status(400).send({message: "Listing content can't be empty"})
+      }
+    console.log('req.body = ', req.body)
+    //***************************
+
     // check if cart is set already (in session store)
     if (!req.session.cart) {
         return res.status(400).json({
@@ -50,9 +58,43 @@ router.post('/', async (req, res) => {
                 error: err
             })
         }
-        console.log("Order processed successfully")
-        res.json(charge) // json response
-        req.session.cart = null; // empty cart
+        // Create a new Order:
+        // 1. configure the order object
+        var order = new Order({
+          // req.body = where express stores values sent in the post request (from frontend checkout form)
+          userName: req.body.userName,
+          userEmail: req.body.userEmail,
+          userNumber: req.body.userNumber,
+          address: req.body.address,
+          cart: cart, //  cart already exists
+          paymentID: charge.id // retrieve from the charge object (created by Stripe)
+        }) 
+        // 2. Save it to the database
+        /*order.save(function(err, result) {
+            if (err) {
+                console.log(err)
+                return res.status(500).send({
+                    message: "Problem creating order",
+                    error: err
+                })
+            } 
+            console.log("Order processed successfully")
+            res.json(charge) // json response
+            req.session.cart = null; // empty cart
+        }) */
+        // save new listing to DB
+        order.save()
+        .then(order => {        
+            // success! return 201 status with order object
+            return res.status(201).json(order)
+        })
+        .catch(err => {
+            console.log(err)
+            return res.status(500).send({
+            message: "Problem creating your order",
+            error: err
+            })
+        })
     })
 })
 

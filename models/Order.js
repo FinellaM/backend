@@ -26,7 +26,7 @@ const orderSchema = new mongoose.Schema({
         type: Object,
         required: true
     },
-    // allows the Stripe payment to be connected to it's associated order 
+    // The Stripe payment ID - allows the payment to be connected to it's associated order 
     paymentID: {
         type: String,
         required: true
