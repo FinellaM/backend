@@ -10,6 +10,39 @@ const Cart = require('./../models/Cart')
 const Item = require('./../models/Item') 
 const path = require('path')
 
+// GET - get cart
+router.get('/', (req, res) => {
+    // check if cart is set already (in session store)
+        if (!req.session.cart) {
+            return res.status(400).json({
+                message: "Your cart is empty"
+            })
+        }
+        // cart exists:
+        var cart = new Cart(req.session.cart); // create a new cart off the one stored in the session
+        // if cart is empty:
+        if(cart.totalQty === 0) {
+            return res.status(400).json({
+                message: "Your cart is empty"
+            })
+        }
+        res.json(cart);
+});
+
+// GET - get cart items as an array
+router.get('/items', (req, res) => {
+    // check if cart is set already (in session store)
+        if (!req.session.cart) {
+            return res.status(400).json({
+                message: "Your cart is empty"
+            })
+        }
+        // cart exists:
+        var cart = new Cart(req.session.cart); // create a new cart off the one stored in the session
+        // create an array of the items in the cart
+        res.json(cart.generateArray());
+});
+
 // add product to cart (store in user session, will be stored in a cart object)
 router.get('/:id', (req, res) => {
 
@@ -73,25 +106,6 @@ router.delete('/remove/:id', (req, res) => {
     }else{
         res.json(cart);
     }
-});
-
-// GET - get cart
-router.get('/', (req, res) => {
-    // check if cart is set already (in session store)
-        if (!req.session.cart) {
-            return res.status(400).json({
-                message: "Your cart is empty"
-            })
-        }
-        // cart exists:
-        var cart = new Cart(req.session.cart); // create a new cart off the one stored in the session
-        // if cart is empty:
-        if(cart.totalQty === 0) {
-            return res.status(400).json({
-                message: "Your cart is empty"
-            })
-        }
-        res.json(cart);
 });
 
    
