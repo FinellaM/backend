@@ -76,6 +76,10 @@ app.use('/cart', cartRouter)
 const checkoutRouter = require('./routes/checkout')
 app.use('/checkout', checkoutRouter)
 
+// Order route
+const orderRouter = require('./routes/order')
+app.use('/order', orderRouter)
+
 // Product route
 /*app.get('/product', (req, res) => {
     res.send("Listing all products")
