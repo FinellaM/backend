@@ -95,6 +95,7 @@ router.post('/', async (req, res) => {
             error: err
             })
         })
+        req.session.cart = null; // empty cart
     })
 })
 

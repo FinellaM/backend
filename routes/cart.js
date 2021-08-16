@@ -42,6 +42,17 @@ router.get('/:id', (req, res) => {
     })
 });
 
+// GET - remove an item from cart by id
+router.get('/remove/:id', (req, res) => {
+    var productId = req.params.id;
+    var cart = new Cart(req.session.cart ? req.session.cart : {});
+
+    cart.removeItem(productId);
+    req.session.cart = cart;
+    res.json(cart);
+    console.log("Item removed from cart")
+});
+
 // GET - get cart
 router.get('/', (req, res) => {
     // check if cart is set already (in session store)
