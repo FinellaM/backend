@@ -24,6 +24,13 @@ module.exports = function Cart(oldCart) {
         delete this.items[id];
     }
 
+    /* function to clear the Cart
+    this.clearCart = function() {
+        delete this.items;
+        delete this.totalPrice;
+        delete this.totalQty;
+    } */
+
     // transform object into an array (incase it needs to be outputted as a list etc)
     this.generateArray = function() {
         var arr = [];

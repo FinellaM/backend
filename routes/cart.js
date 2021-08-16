@@ -42,8 +42,23 @@ router.get('/:id', (req, res) => {
     })
 });
 
+// GET - clear cart
+router.delete('/remove', (req, res) => {
+    // check if cart is set already (in session store)
+    if (!req.session.cart) {
+        return res.status(400).json({
+            message: "Your cart is empty"
+        })
+    }
+    // cart exists:
+    req.session.cart = null; // empty cart
+    return res.json({
+        message: "You have cleared you cart"
+    })
+});
+
 // GET - remove an item from cart by id
-router.get('/remove/:id', (req, res) => {
+router.delete('/remove/:id', (req, res) => {
     var productId = req.params.id;
     var cart = new Cart(req.session.cart ? req.session.cart : {});
 
