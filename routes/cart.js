@@ -49,8 +49,15 @@ router.get('/remove/:id', (req, res) => {
 
     cart.removeItem(productId);
     req.session.cart = cart;
-    res.json(cart);
     console.log("Item removed from cart")
+    // if cart is empty:
+    if(cart.totalQty === 0) {
+        return res.status(400).json({
+            message: "Your cart is empty"
+        })
+    }else{
+        res.json(cart);
+    }
 });
 
 // GET - get cart
@@ -63,11 +70,13 @@ router.get('/', (req, res) => {
         }
         // cart exists:
         var cart = new Cart(req.session.cart); // create a new cart off the one stored in the session
+        // if cart is empty:
+        if(cart.totalQty === 0) {
+            return res.status(400).json({
+                message: "Your cart is empty"
+            })
+        }
         res.json(cart);
-        //console.log(cart);
-        // ***THIS IS RENDER - NEEDS TO BE DONE IN FRONT END INSTEAD? - refer to routes/listing.js for alternative setup
-        // res.render('shop/cart', {products: cart.generateArray(), totalPrice: cart.totalPrice}); 
-    
 });
 
    
