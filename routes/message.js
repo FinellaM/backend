@@ -27,12 +27,60 @@ router.get('/', (req, res) => {
 // ****need to check to ensure this works both with and without an attachement (image file) included ****
 
 router.post('/', (req, res) => {
-    // validate  - check that request body isn't empty
-    if(Object.keys(req.body).length === 0){   
-      return res.status(400).send({message: "Message content can't be empty"})
-      // stops the code from continuing to run, user must fill out form correctly and submit again.
-    }
-    
+  // validate request 
+  if(!req.body) return res.status(400).send({message: "Message content can't be empty"})
+    // stops the code from continuing to run, user must fill out form correctly and submit again.
+
+  let attachmentFilename = null
+
+  // if an attachmnt exists, upload it first
+  if(req.files && req.files.attachment){
+    // upload attachment then create message
+    let uploadPath = path.join(__dirname, '..', 'public', 'files')
+    Utils.uploadFile(req.files.attachment, uploadPath, (uniqueFilename) => {
+      attachmentFilename = uniqueFilename
+      // create a new message with all fields including attachment
+      let newMessage = new Message({  
+        fullName: req.body.fullName,
+        businessName: req.body.businessName, // not a required field
+        email: req.body.email,
+        phone: req.body.phone,
+        message: req.body.message,
+        attachment: attachmentFilename
+      })
+      // save new message to DB
+      newMessage.save()
+      .then(message => {        
+        // success!  
+        // return 201 status with message object
+        return res.status(201).json(message)
+      })
+      .catch(err => {
+        console.log(err)
+        return res.status(500).send({
+          message: "Problem sending your message",
+          error: err
+        })
+      })
+    })
+  }else{
+    // save new message to DB without attachmnt
+    let newMessage = new Message (req.body)
+    newMessage.save()
+    .then(message => {        
+      // success!  
+      // return 201 status with message object
+      return res.status(201).json(message)
+    })
+    .catch(err => {
+      console.log(err)
+      return res.status(500).send({
+        message: "Problem sending your message",
+        error: err
+      })
+    })
+  }
+})
     /* POST REQUEST NOT WORKING WITH IMAGE UPLOAD - TRY WITHOUT
     validate - check if image file (attachment) exists
     if(!req.files || !req.files.image){
@@ -50,7 +98,7 @@ router.post('/', (req, res) => {
     let uploadPath = path.join(__dirname, '..', 'public')
     Utils.uploadFile(req.files.image, uploadPath, (uniqueFilename) => {    
       // create new message object (runs once image is uploaded)
-      let newMessage = new Message({ 
+      let newMessage = new Message({  
         fullName: req.body.fullName,
         businessName: req.body.businessName, // not a required field
         email: req.body.email,
@@ -59,23 +107,6 @@ router.post('/', (req, res) => {
         attachment: uniqueFilename
       })
       */
-    
-      // save new message to DB
-      let newMessage = new Message (req.body)
-      newMessage.save()
-      .then(message => {        
-        // success!  
-        // return 201 status with message object
-        return res.status(201).json(message)
-      })
-      .catch(err => {
-        console.log(err)
-        return res.status(500).send({
-          message: "Problem sending your message",
-          error: err
-        })
-      })
-  })
 
 // export
 module.exports = router
