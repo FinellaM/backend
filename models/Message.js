@@ -1,10 +1,10 @@
-// Message SCHEMA and MODEL (contact form data)
+// MESSAGE SCHEMA and MODEL (for contact form data)
+// (note from Natalia) - attachment upload should upload the file to the server, but I couldn't get this to work.
 
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 require('mongoose-type-email') // required for email
-const Utils = require('./../utils') // required for file (image) upload? ***
-
+const Utils = require('./../utils') // required for file (image) upload
 
 // schema
 const messageSchema = new mongoose.Schema({
@@ -22,8 +22,7 @@ const messageSchema = new mongoose.Schema({
         required: true    
     },
     phone: {
-        type: String,
-        required: true  
+        type: String, 
     },
     message: {
         type: String,

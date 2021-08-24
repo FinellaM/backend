@@ -1,5 +1,4 @@
 // ROUTES file: message.js
-// fetch requests from MessageAPI (frontend) come here
 
 const express = require('express')
 const router = express.Router()
@@ -14,54 +13,38 @@ router.get('/', (req, res) => {
       // if successful will return json object containing list of all messages (messages)
       .then((messages) => {
           res.json(messages)
-          // console.log(messages)
       })
       // runs when there's an error
       // print error message + info in error object in console log
       .catch((err) => {
-          console.log("problem getting messages", err)
+          console.log("Problem getting messages", err)
       })
 })
 
 // POST - create a new message -----------------------------------------------------
-// ****need to check to ensure this works both with and without an attachement (image file) included ****
-
 router.post('/', (req, res) => {
-    // validate  - check that request body isn't empty
-    if(Object.keys(req.body).length === 0){   
-      return res.status(400).send({message: "Message content can't be empty"})
-      // stops the code from continuing to run, user must fill out form correctly and submit again.
-    }
-    
-    /* POST REQUEST NOT WORKING WITH IMAGE UPLOAD - TRY WITHOUT
-    validate - check if image file (attachment) exists
-    if(!req.files || !req.files.image){
-      // return res.status(400).send({message: "Image can't be empty"})
-      // image file NOT actually required
-      console.log("No image file attached with this message")
-    }
-    
-    console.log('req.body = ', req.body) 
-  
-    // image file exists. Upload image, then create new message
-     // upload.File function: upload.File(file, uploadPath, callback) 
-     // uploadPath = public folder 
-     // callback: returns a uniqueFilename 
-    let uploadPath = path.join(__dirname, '..', 'public')
-    Utils.uploadFile(req.files.image, uploadPath, (uniqueFilename) => {    
-      // create new message object (runs once image is uploaded)
-      let newMessage = new Message({ 
+  // validate request 
+  if(!req.body) return res.status(400).send({message: "Message content can't be empty"})
+    // stops the code from continuing to run, user must fill out form correctly and submit again.
+
+  let attachmentFilename = null
+
+  // if an attachment exists, upload it first
+  if(req.files && req.files.attachment){
+    // upload attachment then create message
+    let uploadPath = path.join(__dirname, '..', 'public', 'files') // (note from Natalia) - this is the part that does not work
+    Utils.uploadFile(req.files.attachment, uploadPath, (uniqueFilename) => {
+      attachmentFilename = uniqueFilename
+      // create a new message with all fields including attachment
+      let newMessage = new Message({  
         fullName: req.body.fullName,
         businessName: req.body.businessName, // not a required field
         email: req.body.email,
-        phone: req.body.phone,
+        phone: req.body.phone, // not a required field
         message: req.body.message,
-        attachment: uniqueFilename
+        attachment: attachmentFilename
       })
-      */
-    
       // save new message to DB
-      let newMessage = new Message (req.body)
       newMessage.save()
       .then(message => {        
         // success!  
@@ -75,7 +58,26 @@ router.post('/', (req, res) => {
           error: err
         })
       })
-  })
-
-// export
+    })
+  }else{
+    // save new message to DB without attachmnt
+    let newMessage = new Message (req.body)
+    newMessage.save()
+    .then(message => {        
+      // success!  
+      // return 201 status with message object
+      return res.status(201).json(message)
+    })
+    .catch(err => {
+      console.log(err)
+      return res.status(500).send({
+        message: "Problem sending your message",
+        error: err
+      })
+    })
+  }
+})
+   
+// EXPORT the router object 
+// (imported in server.js in 'ROUTES' section)
 module.exports = router
