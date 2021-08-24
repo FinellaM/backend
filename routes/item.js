@@ -1,7 +1,6 @@
-// ITEM ROUTES
+// ITEM ROUTES 
 // used for cart, checkout and orders
 
-// express has it's own router we can use. Store in variable 'router'
 const express = require("express")
 const router = express.Router()
 const Item = require('./../models/Item')
@@ -23,13 +22,13 @@ router.get('/', (req, res) => {
         })
 })
 
-// GET - get single product
+// GET - get single product item
 router.get('/:id', (req, res) => {
-    // use the Product model to find one product by id - search the database for that product
+    // use the Item model to find one item by id - search the database for that item
     Item.findById(req.params.id)
         .then((item) => {
-            // check if product with that id exists
-            // if it's false/product not found, send status code + json mesage
+            // check if item with that id exists
+            // if it's false/ not found, send status code + json mesage
             if(!item) {
                 res.status(400).json({
                     message: "Product item doesn't exist"

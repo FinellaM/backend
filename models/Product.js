@@ -1,4 +1,4 @@
-// Product SCHEMA and MODEL
+// PRODUCT SCHEMA and MODEL
 
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
@@ -18,14 +18,14 @@ const productSchema = new mongoose.Schema({
     nutrition: [{ // array
         type: Schema.Types.ObjectId,
         required: true,
-        // communicates this is linked to the nutrition collection in the database
+        // link to the nutrition collection in the database
         // allows us to bring in product's associated nutrition information details 
         ref: 'Nutrition' 
     }],
     items: [{ // array
         type: Schema.Types.ObjectId,
         required: true,
-        // communicates this is linked to the item collection in the database 
+        // link to the item collection in the database 
         ref: 'Item' 
     }],
     rating: {

@@ -1,8 +1,5 @@
 // Nutrition ROUTES
-// fetch requests from NutritionAPI (frontend) will come here
 
-
-// express has it's own router we can use. Store in variable 'router'
 const express = require("express")
 const router = express.Router()
 const Nutrition = require('./../models/Nutrition')
@@ -10,7 +7,6 @@ const path = require('path')
 
 // GET - get all nutrition information documents
 router.get('/', (req, res) => {
-    
         
   // get all nutrition information docs from the Nutrition model using the find() method
   Nutrition.find()

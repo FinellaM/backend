@@ -81,10 +81,6 @@ const orderRouter = require('./routes/order')
 app.use('/order', orderRouter)
 
 // Product route
-/*app.get('/product', (req, res) => {
-    res.send("Listing all products")
-}) */
-// completed 
 const productRouter = require('./routes/product')
 app.use('/product', productRouter)
 
@@ -93,18 +89,8 @@ const itemRouter = require('./routes/item')
 app.use('/item', itemRouter)
 
 // Message (contact form) route
-/*app.get('/message', (req, res) => {
-    res.send("Listing all messages")
-}) */
-// completed/incomplete 
 const messageRouter = require('./routes/message')
 app.use('/message', messageRouter)
-
-// Stockist  route
-// still to be completed 
-app.get('/stockist', (req, res) => {
-    res.send("Listing all stockists")
-})
 
 
 // run app (on configured port) -----------------------------------------------------------------

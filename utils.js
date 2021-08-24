@@ -1,8 +1,10 @@
+// For image/file upload
+
 const { v4: uuidv4 } = require('uuid')
 const path = require('path')
 
 class Utils {
-
+    // uploadFile function used in message route (not working)
     uploadFile(file, uploadPath, callback){        
         // get file extension (.jpg, .png etc)
         const fileExt = file.name.split('.').pop()

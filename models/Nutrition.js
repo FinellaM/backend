@@ -1,4 +1,4 @@
-// Product SCHEMA and MODEL
+// NUTRITION SCHEMA and MODEL
 
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
@@ -29,7 +29,7 @@ const nutritionSchema = new mongoose.Schema({
     },
     ingredients: {
         type: String,
-    },
+    }
 })
 
 // create model

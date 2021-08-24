@@ -1,4 +1,4 @@
-// Item (individual products sold) SCHEMA and MODEL
+// ITEM (individual products sold) SCHEMA and MODEL
 
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
@@ -12,8 +12,7 @@ const itemSchema = new mongoose.Schema({
     product: {
         type: Schema.Types.ObjectId,
         required: true,
-        // communicates this is linked to the product Model in the database
-        // allows us to bring in item's full product information details if needed
+        // link to the product Model in the database (allows us to bring in item's full product information details from here if needed)
         ref: 'Product' 
     },
     pack: {

@@ -1,7 +1,5 @@
 // PRODUCT ROUTES
-// fetch requests from ProductAPI (frontend) will come here
 
-// express has it's own router we can use. Store in variable 'router'
 const express = require("express")
 const router = express.Router()
 const Product = require('./../models/Product')
@@ -15,7 +13,6 @@ router.get('/', (req, res) => {
         // if successful will return json object containing list of all products (products)
         .then((products) => {
             res.json(products)
-            // console.log(products)
         })
         // runs when there's an error
         // print error message + info in error object in console log

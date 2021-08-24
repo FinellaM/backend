@@ -1,4 +1,4 @@
-// Order SCHEMA and MODEL
+// ORDER SCHEMA and MODEL
 
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema

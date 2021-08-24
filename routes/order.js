@@ -1,4 +1,4 @@
-// ORDER ROUTE
+// ORDER ROUTE 
 
 const express = require("express")
 const router = express.Router()
@@ -13,7 +13,6 @@ router.get('/', (req, res) => {
         // if successful will return json object containing list of all orders
         .then((orders) => {
             res.json(orders)
-            // console.log(orders)
         })
         // runs when there's an error
         // print error message + info in error object in console log
